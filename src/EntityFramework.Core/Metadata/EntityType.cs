@@ -251,6 +251,10 @@ namespace Microsoft.Data.Entity.Metadata
                 }
             }
 
+            UpdateIndexes();
+            UpdateShadowIndexes();
+            UpdateOriginalValueIndexes();
+
             return _primaryKey;
         }
 

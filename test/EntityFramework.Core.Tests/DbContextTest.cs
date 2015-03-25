@@ -1424,19 +1424,19 @@ namespace Microsoft.Data.Entity.Tests
 
                 var categoryType = context.Model.GetEntityType(typeof(Category));
                 Assert.Equal("Id", categoryType.GetPrimaryKey().Properties.Single().Name);
-                Assert.Equal(
+                AssertEqual(
                     new[] { "Id", "Name" },
                     categoryType.GetProperties().Select(p => p.Name).ToArray());
 
                 var productType = context.Model.GetEntityType(typeof(Product));
                 Assert.Equal("Id", productType.GetPrimaryKey().Properties.Single().Name);
-                Assert.Equal(
+                AssertEqual(
                     new[] { "CategoryId", "Id", "Name", "Price" },
                     productType.GetProperties().Select(p => p.Name).ToArray());
 
                 var guType = context.Model.GetEntityType(typeof(TheGu));
                 Assert.Equal("Id", guType.GetPrimaryKey().Properties.Single().Name);
-                Assert.Equal(
+                AssertEqual(
                     new[] { "Id", "ShirtColor" },
                     guType.GetProperties().Select(p => p.Name).ToArray());
             }
@@ -2334,6 +2334,13 @@ namespace Microsoft.Data.Entity.Tests
 
                 Assert.True(changeDetector.DetectChangesCalled);
             }
+        }
+
+        private void AssertEqual(IReadOnlyList<string> expectedNames, IEnumerable<string> actualNames)
+        {
+            Assert.Equal(
+                new SortedSet<string>(expectedNames, StringComparer.Ordinal),
+                new SortedSet<string>(actualNames, StringComparer.Ordinal));
         }
 
         private class ChangeDetectorProxy : ChangeDetector
