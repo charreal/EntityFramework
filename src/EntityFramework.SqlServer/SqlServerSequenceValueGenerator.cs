@@ -36,8 +36,10 @@ namespace Microsoft.Data.Entity.SqlServer
 
         protected override long GetNewLowValue()
         {
-            var sql = "SELECT NEXT VALUE FOR " + _sqlGenerator.DelimitIdentifier(_sequenceName);
-            var nextValue = _executor.ExecuteScalar(_connection, _connection.DbTransaction, sql);
+            var nextValue = _executor.ExecuteScalar(
+                _connection,
+                _connection.DbTransaction,
+                _sqlGenerator.GenerateNextSequenceValueOperation(_sequenceName));
 
             return (long)Convert.ChangeType(nextValue, typeof(long), CultureInfo.InvariantCulture);
         }
